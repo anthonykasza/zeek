@@ -698,6 +698,12 @@ zeek::detail::SetupResult setup(int argc, char** argv,
 
 	if ( options.pcap_filter )
 		{
+		if ( ! global_scope()->Find("PacketFilter::default_capture_filter") )
+			{
+			fprintf(stderr, "ERROR: The packet filter option (-f) requires the packet-filter framework to be loaded.\n");
+			exit(1);
+			}
+
 		const auto& id = global_scope()->Find("cmd_line_bpf_filter");
 
 		if ( ! id )
